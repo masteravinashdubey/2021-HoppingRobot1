@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Name and spawn pose -->
+  <arg name="robot_name" default="balance_bot" />
+  <arg name="start_x" default="0.0" />
+  <arg name="start_y" default="0.0" />
+  <arg name="start_z" default="0.2" />
+  <arg name="start_yaw" default="0.0" />
+
+  <!-- Physical properties -->
+  <arg name="body_length" default="0.8" />
+  <arg name="body_width" default="0.3" />
+  <arg name="body_depth" default="0.3" />
+  <arg name="body_mass" default="10.0" />
+  <arg name="wheel_mass" default="1.0" />
+  <arg name="wheel_radius" default="0.2" />
+  <arg name="training_wheels" default="false" />
+
+
+
+    
+    <!-- Parse URDF file with specified arguments -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find balance_bot_description)/urdf/balance_bot.urdf.xacro'"/>
+    
+    <!-- Pass parsed URDF to Gazebo model spawning service -->
+    <node pkg="gazebo_ros" type="spawn_model"  name="spawn_$(arg robot_name)" args="-urdf -param robot_description -model $(arg robot_name) -x $(arg start_x) -y $(arg start_y) -z $(arg start_z) -Y $(arg start_yaw)"/> 
+
+    <!-- Spawning effort controller -->
+    <rosparam file="$(find balance_bot_gazebo)/cfg/balance_bot_controller.yaml" command="load"/> 
+
+    <!--node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false"/>
+     </node-->
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" respawn="false" output="screen">
+      <param name="publish_frequency" value="50.0" />
+    </node>
+    
+	    
+	    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"  output="screen" ns="/balance_bot" args="joint_state_controller
+		          left_wheel_controller
+		          right_wheel_controller"/>
+
+</launch>

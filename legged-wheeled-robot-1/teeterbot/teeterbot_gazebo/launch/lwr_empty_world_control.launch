@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+<arg name="paused" default="false" doc="Starts gazebo in paused mode" />
+  <arg name="gui" default="true" doc="Starts gazebo gui" />
+
+  <!-- Start up Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+    <arg name="paused" value="true"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- Spawn Teeterbot with specific settings -->
+  <include file="$(find teeterbot_gazebo)/launch/teeterbot_robot.launch" >
+    <!-- Name and spawn pose -->
+    <arg name="robot_name" value="teeterbot" />
+    <arg name="start_x" value="0.0" />
+    <arg name="start_y" value="0.0" />
+    <arg name="start_z" value="1.0" />
+    <arg name="start_yaw" value="0.0" />
+
+
+  </include>
+
+
+  <node pkg="teeterbot_gazebo" name="lwr_joint_pd" type="lwr_joint_pd.py" output="screen"> 
+  </node>
+
+  <node pkg="teeterbot_gazebo" name="lwr_wheel_lqr" type="lwr_wheel_lqr.py" output="screen"> 
+  </node>
+
+</launch>

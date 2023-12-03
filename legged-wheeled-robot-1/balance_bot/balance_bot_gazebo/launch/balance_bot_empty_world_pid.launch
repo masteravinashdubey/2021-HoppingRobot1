@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Start up Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+  <!-- Spawn Balance bot with specific settings -->
+  <include file="$(find balance_bot_gazebo)/launch/balance_bot_robot.launch" >
+    <!-- Name and spawn pose -->
+    <arg name="robot_name" value="balance_bot" />
+    <arg name="start_x" value="0.0" />
+    <arg name="start_y" value="0.0" />
+    <arg name="start_z" value="0.2" />
+    <arg name="start_yaw" value="0.0" />
+
+    <!-- Physical properties -->
+    <arg name="body_length" value="0.8" />
+    <arg name="body_width" value="0.3" />
+    <arg name="body_depth" value="0.3" />
+    <arg name="body_mass" value="10.0" />
+    <arg name="wheel_mass" value="1.0" />
+    <arg name="wheel_radius" value="0.2" />
+    <arg name="training_wheels" value="false" />
+
+  </include>
+
+  <node pkg="balance_bot_gazebo" name="sb_PID" type="sb_PID.py" output="screen"> 
+  </node>
+
+</launch>

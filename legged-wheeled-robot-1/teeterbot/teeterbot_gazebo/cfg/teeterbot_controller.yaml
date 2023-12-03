@@ -1,0 +1,31 @@
+teeterbot:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Position Controllers ---------------------------------------
+  left_wheel_controller:
+    type: effort_controllers/JointEffortController
+    joint: left_wheel
+#    pid: {p: 100.0, i: 0.01, d: 10.0}
+  right_wheel_controller:
+    type: effort_controllers/JointEffortController
+    joint: right_wheel
+#    pid: {p: 100.0, i: 0.01, d: 10.0}
+  left_thigh_controller:
+    type: effort_controllers/JointPositionController
+    joint: left_thigh
+    pid: {p: 150.0, i: 2.0, d: 15.0}
+  right_thigh_controller:
+    type: effort_controllers/JointPositionController
+    joint: right_thigh
+    pid: {p: 150.0, i: 2.0, d: 15.0}
+  left_calf_controller:
+    type: effort_controllers/JointPositionController
+    joint: left_calf
+    pid: {p: 150.0, i: 2.0, d: 15.0}
+  right_calf_controller:
+    type: effort_controllers/JointPositionController
+    joint: right_calf
+    pid: {p: 150.0, i: 2.0, d: 15.0}
